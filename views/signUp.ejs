@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp Page</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-3" style="width: 30%; border: 1px solid green; padding: 3%;">
+    <center><h3>SignUp</h3></center>
+        <form name="register" action="" method="POST" onsubmit="validatePwd(event)">
+            <div class="form-group mt-2">
+                <div id="douplicate" class="error"></div>
+              <label for="username">Username</label>
+              <input  name="username" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Username">
+            </div>
+            <div class="form-group mt-2">
+                <div id="checkPwd" class="error"></div>
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
+            <div class="form-group mt-2">
+                <div id="checkConfirmPwd" class="error"></div>
+                <label for="password">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm_pwd" name="confirm_pwd">
+            </div>
+            <button type="submit" class="btn btn-success mt-3">SignUp</button>
+          </form>
+    </div>
+    <center>
+        <span>Already have an account?</span>
+        <a href="http://localhost:3000/signIn">SignIn</a>
+    </center>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/validation.js"></script>
+</body>
+</html>

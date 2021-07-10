@@ -1,29 +1,45 @@
 const user_model = require('../models/user');
 const bcrypt = require('bcrypt');
-
-exports.createUser = (req,res)=>{
+exports.renderSignIn = (req,res)=>{
+    res.render('signIn')
+}
+exports.renderSignUp = (req,res)=>{
+    res.render('signUp')
+}
+exports.createUser = async(req,res)=>{
     console.log('req create user: ',req.body)
-    
-    bcrypt.genSalt(10).then(salt=>{
-        bcrypt.hash(req.body.password, salt).then(hashed =>{
-            const user = new user_model({
-                username:req.body.username,
-                password:hashed
+    console.log("req username",req.body.username)
+
+    users = await user_model.find({username:req.body.username});
+    console.log("got users",users)
+    if(users != null ){
+        res.json(users[0])
+    }else{
+        bcrypt.genSalt(10).then(salt=>{
+            bcrypt.hash(req.body.password, salt).then(hashed =>{
+                const user = new user_model({
+                    username:req.body.username,
+                    password:hashed
+                })
+                user.save().then(result => {
+                    console.log(result)
+                    res.json({users:null})
+                }).catch(err=>{console.log(err)})
+            }).catch(err =>{
+                console.log("hash error: ",err)
+                res.redirect("/")
             })
-            user.save().then(result => {
-                console.log(result)
-                res.json(user)
-            }).catch(err=>{console.log(err)})
-        }).catch(err =>{
-            console.log("hash error: ",err)
         })
-    })
+    }
+    
+
    
 }
 exports.login = async(req,res)=>{
     await user_model.find({username:req.body.username}).then(users =>{
         if(users){
             console.log("found users",users)
+            console.log("req body", req.body)
             bcrypt.compare(req.body.password, users[0].password).then(match =>{
                 if(match){
                     console.log('login successed')
@@ -46,4 +62,14 @@ exports.login = async(req,res)=>{
         res.json({message:"user not found, somthing went wrong",err:true})
     })
 
+}
+exports.getUserByName = async(req,res)=>{
+    console.log("req username",req.params.username)
+    users = await user_model.find({username:req.params.username});
+    console.log("got users",users)
+    if(users != null){
+        res.json(users[0])
+    }else{
+        res.json({user:null})
+    }
 }
