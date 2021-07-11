@@ -18,7 +18,7 @@
 <body>
     <div class="container mt-3" style="width: 30%; border: 1px solid green; padding: 3%;">
     <center><h3>SignUp</h3></center>
-        <form name="register" action="" method="POST" onsubmit="validatePwd(event)">
+        <form name="register" method="POST" onsubmit="validatePwd(event)">
             <div class="form-group mt-2">
                 <div id="douplicate" class="error"></div>
               <label for="username">Username</label>
@@ -35,7 +35,7 @@
                 <input type="password" class="form-control" id="confirm_pwd" name="confirm_pwd">
             </div>
             <button type="submit" class="btn btn-success mt-3">SignUp</button>
-          </form>
+        </form>
     </div>
     <center>
         <span>Already have an account?</span>

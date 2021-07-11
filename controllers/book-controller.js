@@ -24,21 +24,27 @@ exports.getBooks = async (req,res)=>{
     param = req.query
     var respond ={}
     console.log("req books", req.query)
-    await bookModel.find().then(books =>{
-        if(Object.keys(param).length != 0){
-            let start = (param.page-1)*param.size
-            let end = param.page*param.size
-            respond.size = param.size
-            respond.totalPages = Math.ceil(books.length/param.size)
-            respond.totalElements = books.length
-            respond.page = param.page
-            respond.content = books.slice(start,end)
-            res.json(respond)
-        }else
-            res.json(books)
-    }).catch(err =>{
-        console.log(err)
-    })
+    console.log("cookie",req.cookies['userId'])
+    if(req.cookies['userId']){
+        await bookModel.find().then(books =>{
+            if(Object.keys(param).length != 0){
+                let start = (param.page-1)*param.size
+                let end = param.page*param.size
+                respond.size = param.size
+                respond.totalPages = Math.ceil(books.length/param.size)
+                respond.totalElements = books.length
+                respond.page = param.page
+                respond.content = books.slice(start,end)
+                res.json(respond)
+            }else
+                res.json(books)
+        }).catch(err =>{
+            console.log(err)
+        })
+    }else{
+        res.redirect('/signIn')
+    }
+
 }
 exports.getBookById = async (req,res)=>{
     console.log("req book ", req.params.id)

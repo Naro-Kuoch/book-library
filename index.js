@@ -16,7 +16,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(userRouter);
 app.use(bookRouter);
-mongoose.connect('mongodb+srv://user1:User12345@cluster0.6k8oa.mongodb.net/library?retryWrites=true&w=majority',{ useNewUrlParser: true })
+mongoose.connect('mongodb+srv://user1:User12345@cluster0.6k8oa.mongodb.net/library?retryWrites=true&w=majority',{ useNewUrlParser: true , useUnifiedTopology: true})
 .then(result => {
   console.log("Db is connected");
   app.listen(port);

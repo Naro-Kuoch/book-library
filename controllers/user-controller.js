@@ -1,7 +1,7 @@
 const user_model = require('../models/user');
 const bcrypt = require('bcrypt');
 exports.renderSignIn = (req,res)=>{
-    res.render('signIn')
+        res.render('signIn')
 }
 exports.renderSignUp = (req,res)=>{
     res.render('signUp')
@@ -12,8 +12,9 @@ exports.createUser = async(req,res)=>{
 
     users = await user_model.find({username:req.body.username});
     console.log("got users",users)
-    if(users != null ){
-        res.json(users[0])
+    if(users.length !=0){
+        console.log("existing users",users)
+        res.json({err:true})
     }else{
         bcrypt.genSalt(10).then(salt=>{
             bcrypt.hash(req.body.password, salt).then(hashed =>{
@@ -23,7 +24,7 @@ exports.createUser = async(req,res)=>{
                 })
                 user.save().then(result => {
                     console.log(result)
-                    res.json({users:null})
+                    res.json({err:false})
                 }).catch(err=>{console.log(err)})
             }).catch(err =>{
                 console.log("hash error: ",err)
@@ -43,6 +44,10 @@ exports.login = async(req,res)=>{
             bcrypt.compare(req.body.password, users[0].password).then(match =>{
                 if(match){
                     console.log('login successed')
+                    res.cookie('userId',users[0]._id,{
+                        maxAge:3600*1000 ,//1h
+                        httpOnly:true
+                    })
                     res.json({message:"login success",err:false})
                 }else{
                     console.log('password not match')
@@ -59,7 +64,7 @@ exports.login = async(req,res)=>{
         }
     }).catch(err=>{
         console.log("somthing went wrong", err)
-        res.json({message:"user not found, somthing went wrong",err:true})
+        res.json({message:"User not found",err:true})
     })
 
 }

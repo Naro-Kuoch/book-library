@@ -4,7 +4,6 @@ function validatePwd(event) {
     var register=document.forms["register"];
     var pwd = register["password"].value;
     var conPwd = register["confirm_pwd"].value; 
-    // var email = register["email"].value;
     console.log("password", pwd)
     console.log("confirm pwd",conPwd)
     var checkuser = document.getElementById("douplicate");
@@ -17,43 +16,43 @@ function validatePwd(event) {
     if (pwd != conPwd) {
       checkconPwd.innerHTML="Password dosn't match !";  
     }
-    if (pwd =="") {
+    else if (pwd =="") {
       checkpwd.innerHTML="Password can't be empty !";
     }
-    if(pwd.length<3 && pwd.length>0){
+    else if(pwd.length<3 && pwd.length>0){
       checkpwd.innerHTML="It requires at least 3 characters !";
     }
     else{
       axios.post("http://localhost:3000/register",{username:username,password:pwd}).then(result=>{
         console.log("res",result.data)
-        if(result.data){
+        if(result.data.err){
           checkuser.innerHTML="User already exists !";
           console.log("User already exist")
         }
        else{
-          window.location.pathname="/signin";
+          window.location.pathname="/signIn";
           console.log("error!");
         }
       })
   }
-}
-function logIn(event){
+};
+function checkErr(event){
   console.log("hi")
   event.preventDefault();
-  var form=document.forms["logIn"];
-  var username = form['username'].value
-  var pwd = form['password'].value
+  var formData=document.forms["logIn"];
+  var username = formData['username'].value
+  var pwd = formData['password'].value
   console.log(username)
   console.log(pwd)
+  checkuser = document.getElementById("checkusername")
   axios.post("http://localhost:3000/logIn",{username:username,password:pwd}).then(result=>{
     console.log("res",result.data)
-  //   if(result.data.err){
-  //     checkuser.innerHTML="User already exists !";
-  //     console.log("User already exist")
-  //   }
-  //  else{
-  //     window.location.pathname="/signin";
-  //     console.log("error!");
-  //   }
+    if(result.data.err){
+      checkuser.innerHTML=result.data.message;
+      console.log("User already exist")
+    }
+   else{
+      window.location.pathname="/books";
+    }
   })
 }
