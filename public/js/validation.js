@@ -38,16 +38,22 @@ function validatePwd(event) {
   }
 }
 function logIn(event){
-  event.preventDefault()
+  console.log("hi")
+  event.preventDefault();
+  var form=document.forms["logIn"];
+  var username = form['username'].value
+  var pwd = form['password'].value
+  console.log(username)
+  console.log(pwd)
   axios.post("http://localhost:3000/logIn",{username:username,password:pwd}).then(result=>{
     console.log("res",result.data)
-    if(result.data){
-      checkuser.innerHTML="User already exists !";
-      console.log("User already exist")
-    }
-   else{
-      window.location.pathname="/signin";
-      console.log("error!");
-    }
+  //   if(result.data.err){
+  //     checkuser.innerHTML="User already exists !";
+  //     console.log("User already exist")
+  //   }
+  //  else{
+  //     window.location.pathname="/signin";
+  //     console.log("error!");
+  //   }
   })
 }
